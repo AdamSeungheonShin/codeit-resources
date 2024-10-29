@@ -7,7 +7,7 @@ export interface ItemDoc extends Omit<TBaseItem, "_id">, Document {
 
 const ItemSchema: Schema = new Schema(
   {
-    name: { type: String, required: true, maxlength: 50, trim: true },
+    name: { type: String, required: true, maxlength: 50, trim: true, unique: true },
     status: { type: String, enum: ItemStatus, required: true },
     description: { type: String, maxlength: 200, default: "" },
     imageUrl: { type: String, default: "" },
@@ -38,3 +38,6 @@ const EquipmentSchema: Schema = new Schema({
   category: { type: Schema.Types.ObjectId, required: true, ref: "Category" },
 });
 export const Equipment = Item.discriminator<IEquipment>("Equipment", EquipmentSchema, "equipment");
+
+RoomSchema.index({ category: 1, name: 1 });
+EquipmentSchema.index({ category: 1, name: 1 });
