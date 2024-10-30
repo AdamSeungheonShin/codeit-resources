@@ -98,7 +98,7 @@ export const getReservationsByTypeAndDate = async (
   const reservations: IReservation[] = await Reservation.find(query)
     .populate("user", "name email")
     .populate("attendees", "name email")
-    .populate({ path: "item", select: "name", model: itemTypeToModel[itemType] })
+    .populate("item", "name itemType")
     .sort({ status: 1, startAt: 1 });
 
   res.status(200).json(reservations);
@@ -129,9 +129,11 @@ export const createReservation = async (
     return;
   }
 
-  if (!isMinuteValid(startAt) || !isMinuteValid(endAt)) {
-    res.status(400).json({ message: "시간은 10분 단위로 설정해야 합니다." });
-    return;
+  if (itemType !== "seat") {
+    if (!isMinuteValid(startAt) || !isMinuteValid(endAt)) {
+      res.status(400).json({ message: "시간은 10분 단위로 설정해야 합니다." });
+      return;
+    }
   }
 
   if (startAt >= endAt) {
