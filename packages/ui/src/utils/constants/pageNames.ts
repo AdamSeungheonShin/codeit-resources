@@ -10,5 +10,6 @@ export const PAGE_NAME = {
   ADMIN_SEATS: "/admin/seats",
   ADMIN_EQUIPMENTS: "/admin/equipments",
 
+  SIGN_IN: "/sign-in",
   PROFILE: "/profile",
 };
